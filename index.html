@@ -17,7 +17,6 @@
   <div class="row" id="headerRow">
     <div class="sm-col-12">
       <h1 class="text-center">Welcome to Atlas</h1>
-      <div><h3>Time left: </h3><span id="timerDisplay"></span></div>
     </div>
   </div>
 
@@ -40,6 +39,12 @@
 
   <!-- >>>>> gameRow <<<<<<  -->
   <div class="row" id="gameRow">
+    <!-- >>>>> Display Stats Here <<<<<<  -->
+    <div class="sm-col-12">
+      <h3>Time left:
+        <span id="timerDisplay"></span>
+      </h3>
+    </div>
     <!-- >>>>> Display Map Here <<<<<<  -->
       <div class="sm-col-12" id="mapContainer">
         <!-- <div class="jumbotron"> -->
@@ -54,10 +59,10 @@
           <p id="word_target">
             __ __ __ __ __
           </p>
-        <div>
+        </div>
       </div>
 
-  </div>
+    </div> <!-- closes the gameRow -->
 
 
 
@@ -74,10 +79,11 @@
 
 <!-- Including scripts here -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="assets/javascript/worldMap.js"></script> -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- <script src="assets/javascript/worldMap.js"></script> -->
 <script src="assets/javascript/timer.js"></script>
-<script src="assets/javascript/model.js"></script>
+<script src="assets/javascript/countriesArray.js"></script>
+<!-- <script src="assets/javascript/model.js"></script> -->
 <script src="assets/javascript/main.js"></script>
 </body>
 </html>

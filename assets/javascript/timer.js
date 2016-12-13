@@ -1,6 +1,6 @@
 // Create a universal countdown object
 var countdown = {
-  SECONDS_PER_QUESTION: 5,
+  SECONDS_PER_QUESTION: 15,
   // secondsLeft: SECONDS_PER_QUESTION, // can't do this, because it doesn't get made yet? :(
   secondsLeft: null,
   timerReference: null,
@@ -74,8 +74,9 @@ var countdown = {
   timesup_callback(){
     // this is the callback function that gets called when time is up
     console.log("times up!");
+    activeGame = false;
   }
 }
 
 // ------ TESTING ---------
-countdown.initialize();
+// countdown.initialize();
