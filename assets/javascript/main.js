@@ -1,11 +1,12 @@
-// ----------- initialize variables -------------
+// I) ----------- initialize variables -------------
 var currentCountryObject = null;
 var answerCountryArray = []; // arrayified country word, with all the letters
 var userCountryArray = []; // arrayified country word, but none of the letters shown
 var activeGame = false; // controls whether the game is active or not
 
-// ----------- helper functions -------------
+// II ) ----------- helper functions -------------
 // these functions get called from inside the event listeners
+
 /* getCountry - randomizes the countriesArray, gets the last country,
 * and gets us an array of the userCountryArray & answerCountryArray
 */
@@ -54,6 +55,7 @@ function getCountry(){
 function displayCountry(){
   var country = currentCountryObject.name;
   // console.log(country);
+  // 1) GOOGLE script that updates the map
   google.charts.load('upcoming', {'packages':['geochart']});
   google.charts.setOnLoadCallback(drawRegionsMap);
 
@@ -74,8 +76,59 @@ function displayCountry(){
   }
 } // closes displayCountry
 
+/* displayWord - this function access the userCountryArray and displays letters
+* if they exist, underlines if it doesn't, and spaces if '//'
+*/
+function displayWord(){
+  // 1) create the container to append each letter
+  var container = $("<p>")
+  // 2) loop through the userArray and append their word to the container
+  userCountryArray.forEach(function(element){
+    if (element == " "){
+      container.append( $("<span>").html("__ ") );
+    } else if(element == "//") {
+      container.append( $("<span>").html("&nbsp;") );
+    } else{
+      container.append( $("<span>").html(element) );
+    }
+  })
+  //3) empty the user word container
+  $("#word_target").empty();
+  //4) update the user word with the container
+  $("#word_target").append(container);
+}
 
-// ----------- playGame eventlistener function --------
+/* updateUserWord - function takes a given letter, and updates the userGuess
+* word wherever that letter appears
+*@param userGuess{string} - letter of the user guess
+*/
+function updateUserWord(userGuess){
+// 1) loop through the answerCountryArray
+  answerCountryArray.forEach(function(element, index){
+    // 1a) if the answerCountry Array index == userGuess
+    // console.log(element + ": " + index);
+    if (element === userGuess){
+      // update the userCountryArray index of the userGuess
+      userCountryArray[index] = userGuess;
+    }
+  })
+  // 2) update the display
+}
+
+/* hasWon - function checks to see if the user has won
+*
+*/
+function hasWon(){
+  for (var i=0; i < answerCountryArray.length; i++){
+    if (answerCountryArray[i] !== userCountryArray[i]){
+      // console.log(answerCountryArray[i] + " not equal to " + userCountryArray[i]);
+      return false;
+    }
+  };
+  return true;
+}
+
+// III) ----------- playGame eventlistener function --------
 function playGame(){
   // console.log("playGame eventlistern ...");
   //1) hide the directions div
@@ -89,31 +142,54 @@ function playGame(){
     // 3b) display the map with that random country
     displayCountry();
 
-    //3c) set active game to true & start the count down!
+    // 3c) update the word display below the country
+    displayWord();
+
+    //3d) set active game to true & start the count down!
     activeGame = true;
     countdown.initialize();
 
 } // closes playGame function
 
 
-// ----------- keydown eventlistener function --------
-function keyDown(){
-  console.log("You pressed a key");
+// III) ----------- keydown eventlistener function --------
+function keyDown(event){
   // 1) check if it is an active game
-
+  if (!activeGame) return;
   // 2) check if the letter is valid
+  if (event.keyCode < 65 || event.keyCode > 90) return;
+  // console.log(event.keyCode); // the number!
+  // console.log(event.key); // the lower case letter
+  // 3) Get the user's guess
+  var userGuess = event.key.toUpperCase();
+  // console.log(userGuess);
+  // 4) check if letter is in the Country
+  if (answerCountryArray.indexOf(userGuess) != -1){
+    // 4a) if letter is in country -- > Right Guess
+    //i) update view
+      console.log('Found!');
+      updateUserWord(userGuess);
+      displayWord(); // updates the view
+    //ii) check if the user has won
+      if (hasWon()){
+        countdown.clear(); // turns off the timer
+        activeGame = false; // turns off the keydown event listeners
+        alert("You've won!");
+        // CALL THE NEXT THING!
+      }
 
-  // 3) check if letter is in the Country
+  } else {
+    // 3b) if letter is not in country --> wrong Guess
+    console.log("Sorry, no " + userGuess);
+    return;
+  }
 
-    // 3a) if letter is not in country --> wrong Guess
-
-    // 3b) if letter is in country -- > Right Guess
 
 } // closes keyDown function
 
 
 
-// ------- Event Listeners -------
+// IV) ------- Event Listeners -------
 $(document).ready(function(){
   // hide the Game initially
   $("#gameRow").hide();
