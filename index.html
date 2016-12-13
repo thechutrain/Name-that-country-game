@@ -1,0 +1,83 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <!-- includes bootstrap 3 as default, without integrity/crossorigin -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <title>Name that Country!</title>
+</head>
+<body>
+
+<div class="container">
+  <!-- >>>>> Header Row <<<<<<  -->
+  <div class="row" id="headerRow">
+    <div class="sm-col-12">
+      <h1 class="text-center">Welcome to Atlas</h1>
+      <div><h3>Time left: </h3><span id="timerDisplay"></span></div>
+    </div>
+  </div>
+
+  <!-- >>>>> Directions Row <<<<<<  -->
+  <div class="row" id="directionsRow">
+    <div class="sm-col-12" id="directions">
+      <div class="jumbotron">
+        <h2>Directions: </h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          Veritatis temporibus placeat, ex quibusdam eaque possimus ratione
+          officia pariatur error quas amet reiciendis deserunt porro architecto
+          officiis? Iusto omnis corrupti numquam.
+        </p>
+        <p class="text-center">
+          <button class="btn btn-info btn-lg" id="playGame">Ready?</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- >>>>> gameRow <<<<<<  -->
+  <div class="row" id="gameRow">
+    <!-- >>>>> Display Map Here <<<<<<  -->
+      <div class="sm-col-12" id="mapContainer">
+        <!-- <div class="jumbotron"> -->
+          <h4>Display Map here</h4>
+          <div id="map_target"></div>
+        <!-- </div> -->
+      </div>  <!-- closes sm-col-12 of map -->
+
+      <!-- >>>>> Display word here <<<<<<  -->
+      <div class="sm-col-12" id="wordContainer">
+        <div class="text-center">
+          <p id="word_target">
+            __ __ __ __ __
+          </p>
+        <div>
+      </div>
+
+  </div>
+
+
+
+</div> <!-- closes the container -->
+
+<!-- >>>>> Footer <<<<<<  -->
+<div class="container-fluid">
+  <p class="text-center">&copy; Alan Chu</p>
+</div>
+
+
+
+
+
+<!-- Including scripts here -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="assets/javascript/worldMap.js"></script> -->
+<script src="assets/javascript/timer.js"></script>
+<script src="assets/javascript/model.js"></script>
+<script src="assets/javascript/main.js"></script>
+</body>
+</html>
