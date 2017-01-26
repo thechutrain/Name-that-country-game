@@ -15,14 +15,14 @@
 <div class="container">
   <!-- >>>>> Header Row <<<<<<  -->
   <div class="row" id="headerRow">
-    <div class="sm-col-12">
+    <div class="col-sm-12">
       <h1 class="text-center">Welcome to Atlas</h1>
     </div>
   </div>
 
   <!-- >>>>> Directions Row <<<<<<  -->
   <div class="row" id="directionsRow">
-    <div class="sm-col-12" id="directions">
+    <div class="col-sm-12" id="directions">
       <div class="jumbotron">
         <h2>Directions: </h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -39,28 +39,42 @@
 
   <!-- >>>>> gameRow <<<<<<  -->
   <div class="row" id="gameRow">
-    <!-- >>>>> Display Stats Here <<<<<<  -->
-    <div class="sm-col-12">
-      <h3>Time left:
-        <span id="timerDisplay"></span>
-      </h3>
+    <!-- >>>>> Vertical Nav Bar <<<<<<  -->
+    <div class="col-sm-1" id="vertical-navbar">
+      <p>Vertical nav bar</p>
+      <p> <- back button </p>
     </div>
-    <!-- >>>>> Display Map Here <<<<<<  -->
-      <div class="sm-col-12" id="mapContainer">
-        <!-- <div class="jumbotron"> -->
-          <h4>Display Map here</h4>
-          <div id="map_target"></div>
-        <!-- </div> -->
-      </div>  <!-- closes sm-col-12 of map -->
+
+
+    <!-- >>>>> Display Alerts here <<<<<<  -->
+    <div class="col-sm-8 col-sm-offset-1" id="alert">
+
+    </div>
 
       <!-- >>>>> Display word here <<<<<<  -->
-      <div class="sm-col-12" id="wordContainer">
+      <div class="col-sm-8 col-sm-offset-1" id="wordContainer">
         <div class="text-center" id="word_target">
           <!-- <p id="word_target">
             __ __ __ __ __
           </p> -->
         </div>
       </div>
+
+      <!-- >>>>> Display Stats Here <<<<<<  -->
+      <div class="col-sm-8 col-sm-offset-1" id="timerContainer">
+        <h3 class="text-center">Time left:
+          <span id="timerDisplay"></span>
+        </h3>
+      </div>
+
+    <!-- >>>>> Display Map Here <<<<<<  -->
+      <div class="col-sm-10" id="mapContainer">
+        <!-- <div class="jumbotron"> -->
+          <h2 class="text-center">What country is that?</h2>
+          <div id="map_target"></div>
+        <!-- </div> -->
+      </div>  <!-- closes sm-col-12 of map -->
+
 
     </div> <!-- closes the gameRow -->
 
@@ -69,7 +83,7 @@
 </div> <!-- closes the container -->
 
 <!-- >>>>> Footer <<<<<<  -->
-<div class="container-fluid">
+<div class="container-fluid" id="footer-container">
   <p class="text-center">&copy; Alan Chu</p>
 </div>
 

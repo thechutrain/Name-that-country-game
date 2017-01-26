@@ -19,20 +19,15 @@ function getCountry(){
         */
         arrayifiedWord = function(word, showLettersBool){
             var arrayifiedWord = [];
-            // *) Loop through the word
+            // *) Loop through the word - show letters or don't
             for (index in word){
               if(word[index]==" "){
-                // console.log("//");
                 arrayifiedWord.push("//");
-              } else if (showLettersBool){
-                // console.log(word[index]);
-                arrayifiedWord.push(word[index].toUpperCase());
-              } else{
-                // console.log(word[index]);
-                arrayifiedWord.push(" ");
-              }
-            }
-            // console.log(arrayifiedWord);
+              } else {
+                // check if you should show the letter
+                showLettersBool ? arrayifiedWord.push(word[index].toUpperCase()) : arrayifiedWord.push(" ");
+              } 
+            }; // for loop
             return arrayifiedWord;
           };
   // console.log("inside getCountry function .... ");
@@ -81,7 +76,7 @@ function displayCountry(){
 */
 function displayWord(){
   // 1) create the container to append each letter
-  var container = $("<p>")
+  var container = $("<h3>")
   // 2) loop through the userArray and append their word to the container
   userCountryArray.forEach(function(element){
     if (element == " "){
@@ -128,8 +123,70 @@ function hasWon(){
   return true;
 }
 
+/* displayFacts- function that removes
+*@param userCorrect {boolean} - if the user was correct or wrong (ran out of time)
+*/
+function displayFacts(userCorrect){
+  // 1) Hide the map & timer & word
+  // TO DO, add some transition???
+  // $("#gameRow").hide();
+  $("#timerContainer").hide();
+  $("#wordContainer").hide();
+  // 2) Create an alert in the header, depending if user was correct or not
+  if (userCorrect){
+    var alert = $("<div>").addClass("alert text-center alert-success").append(
+      $("<p>").html("Correct!")
+    );
+  } else {
+    var alert = $("<div>").addClass("alert text-center alert-danger").append(
+      $("<p>").html("Sorry, <strong>" + currentCountryObject.name + "</strong> was the correct country.")
+    );
+  }
+  // 3) Create text about the
+
+
+  // 4) Append it to the target
+  $("#alert").append(alert);
+}
+
+
+/*
+*/
+function playerIP(){
+  //0) get the ip info
+  // $.get("http://ipinfo.io", function(response) {
+  //   console.log(response.ip, response.country);
+  // }, "jsonp");
+
+  $.ajax({
+    url: "http://ipinfo.io",
+    method: "GET",
+    dataType: "jsonp",
+  }).done(function(response){
+    console.log(response);
+  })
+
+//   var example = $.get( "http://ipinfo.io", function() {
+//     alert( "success" );
+//   })
+//   .done(function(results) {
+//     alert( "second success" );
+//     console.log(results.ip);
+//   })
+//   .fail(function() {
+//     alert( "error" );
+//   })
+//   .always(function() {
+//     alert( "finished" );
+//   });
+//
+}
+
 // III) ----------- playGame eventlistener function --------
 function playGame(){
+  // 0) get player info
+  playerIP();
+
   // console.log("playGame eventlistern ...");
   //1) hide the directions div
   $("#directionsRow").hide();
@@ -138,13 +195,10 @@ function playGame(){
   //**3) Intialize Game
     // 3a) Get a random country
     getCountry();
-
     // 3b) display the map with that random country
     displayCountry();
-
     // 3c) update the word display below the country
     displayWord();
-
     //3d) set active game to true & start the count down!
     activeGame = true;
     countdown.initialize();
@@ -174,8 +228,8 @@ function keyDown(event){
       if (hasWon()){
         countdown.clear(); // turns off the timer
         activeGame = false; // turns off the keydown event listeners
-        alert("You've won!");
-        // CALL THE NEXT THING!
+        // Display Facts
+        displayFacts(true);
       }
 
   } else {
@@ -199,5 +253,16 @@ $(document).ready(function(){
 
   // keydown event listener
   $(document).on("keydown", keyDown)
+
+  // next game event listener
+  // $(document).on("click", ".", );
+
+  // Change the footer size
+  $(window).scroll(function() {
+    // console.log($(window).height);
+      // if (window.height - $("body").scrollTop() > 5){
+      //   console.log("test");
+      // }
+  });
 
 });

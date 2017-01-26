@@ -1,4 +1,21 @@
-/* Testing if refs properly*/
-/*body {
-  background-color: red;
-}*/
+/* ---------->>> Vertical Nav-bar <<<-----------*/
+#vertical-navbar {
+  border: pink 1px dashed;
+  height: 100%;
+}
+
+.container{
+  margin-bottom: 5em;
+}
+
+/* ---------->>> Footer <<<-----------*/
+#footer-container {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+   /*background:#BADA55;*/
+   /*padding: 2em;*/
+   z-index: -1;
+}
