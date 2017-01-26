@@ -75,7 +75,8 @@ var countdown = {
     // this is the callback function that gets called when time is up
     console.log("times up!");
     activeGame = false;
-    displayFacts(false);
+    debugger;
+    // displayFacts(false);
   }
 }
 

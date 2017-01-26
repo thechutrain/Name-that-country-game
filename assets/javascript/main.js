@@ -4,20 +4,21 @@ var answerCountryArray = []; // arrayified country word, with all the letters
 var userCountryArray = []; // arrayified country word, but none of the letters shown
 var activeGame = false; // controls whether the game is active or not
 
-// II ) ----------- helper functions -------------
+// II ) ----------- Function -------------
 // these functions get called from inside the event listeners
 
 /* getCountry - randomizes the countriesArray, gets the last country,
 * and gets us an array of the userCountryArray & answerCountryArray
 */
 function getCountry(){
-      /** this nested functions takes a word and converts it to an array
+      /** ------- helper function: arrayifiedWord() --------- 
+        * this nested functions takes a word and converts it to an array
         * of either letters or empty spaces in place of letters
         * @param {str} word - the word that you will turn into an array
         * @param {boolean} showLetter - if true, it'll return an array containing letter values
         * @return {array} arrayifiedWord - an array of the word that was in the arguments
         */
-        arrayifiedWord = function(word, showLettersBool){
+        function arrayifiedWord(word, showLettersBool){
             var arrayifiedWord = [];
             // *) Loop through the word - show letters or don't
             for (index in word){
@@ -27,30 +28,29 @@ function getCountry(){
                 // check if you should show the letter
                 showLettersBool ? arrayifiedWord.push(word[index].toUpperCase()) : arrayifiedWord.push(" ");
               } 
-            }; // for loop
+            }; // for
             return arrayifiedWord;
-          };
-  // console.log("inside getCountry function .... ");
-  // 1) randomize the countriesArray
-  // TO DO
+        }; // 
 
-  // 2) get the last country
-  currentCountryObject = countriesArray.pop();
-  // console.log(currentCountryObject.name);
-    //2a) assign answerCountryArray & userCountryArray
-    answerCountryArray = arrayifiedWord(currentCountryObject.name, true);
-    userCountryArray = arrayifiedWord(currentCountryObject.name, false);
-    // console.log(answerCountryArray);
-    // console.log(userCountryArray);
-}
+  // 1. Get a random country in the countries array
+  var randomIdx = Math.floor( Math.random() * countriesArray.length );
+  currentCountryObject = countriesArray.splice(randomIdx, 1)[0]; // *remember splice returns an array!
 
-/* displayCountry - takes a country name string and updates view so that it will
+  // 2. Convert country name into an array of the word & blank array
+  answerCountryArray = arrayifiedWord(currentCountryObject.name, true);
+  userCountryArray = arrayifiedWord(currentCountryObject.name, false);
+}; // getCountry
+
+
+/* --------------------- displayCountry() ---------------------- 
+* displayCountry - takes a country name string and updates view so that it will
 * highlight that country. If no string, displays no country
 */
 function displayCountry(){
-  var country = currentCountryObject.name;
-  // console.log(country);
-  // 1) GOOGLE script that updates the map
+  // 1. get the current country
+  var country = currentCountryObject.code;
+
+  // 2. GOOGLE script that updates the map
   google.charts.load('upcoming', {'packages':['geochart']});
   google.charts.setOnLoadCallback(drawRegionsMap);
 
@@ -68,16 +68,17 @@ function displayCountry(){
     var options = {enableRegionInteractivity: false}; // !!! this is where to add options!!
     var chart = new google.visualization.GeoChart(document.getElementById('map_target'));
     chart.draw(data, options);
-  }
-} // closes displayCountry
+  }; // drawRegionsMap();
+} // closes displayCountry()
 
-/* displayWord - this function access the userCountryArray and displays letters
+/* --------------------- displayWord() ---------------------- 
+* displayWord - this function access the userCountryArray and displays letters
 * if they exist, underlines if it doesn't, and spaces if '//'
 */
 function displayWord(){
-  // 1) create the container to append each letter
+  // 1. create the container to append each letter
   var container = $("<h3>")
-  // 2) loop through the userArray and append their word to the container
+  // 2. loop through the userArray and append their word to the container
   userCountryArray.forEach(function(element){
     if (element == " "){
       container.append( $("<span>").html("__ ") );
@@ -86,106 +87,65 @@ function displayWord(){
     } else{
       container.append( $("<span>").html(element) );
     }
-  })
-  //3) empty the user word container
+  }); // forEach
+
+  //3. empty the user word container
   $("#word_target").empty();
-  //4) update the user word with the container
+
+  //4. update the user word with the container
   $("#word_target").append(container);
 }
 
-/* updateUserWord - function takes a given letter, and updates the userGuess
-* word wherever that letter appears
+/* --------------------- updateUserWord() ---------------------- 
+* function takes a given letter, and updates the userGuess wherever that letter appears in word
+* 
 *@param userGuess{string} - letter of the user guess
 */
 function updateUserWord(userGuess){
-// 1) loop through the answerCountryArray
+// 1. loop through the answerCountryArray
   answerCountryArray.forEach(function(element, index){
-    // 1a) if the answerCountry Array index == userGuess
-    // console.log(element + ": " + index);
+    // i. if the answerCountry Array index == userGuess
     if (element === userGuess){
       // update the userCountryArray index of the userGuess
       userCountryArray[index] = userGuess;
-    }
-  })
-  // 2) update the display
+    };
+  }); // forEach
+
+  // 2. update the display
+  displayWord();
 }
 
-/* hasWon - function checks to see if the user has won
-*
+/* --------------------- hasWon() ----------------------  
+* hasWon - function checks to see if the user has won
+*@return {boolean} - If user has won, returns true. If not returns false.
 */
 function hasWon(){
   for (var i=0; i < answerCountryArray.length; i++){
     if (answerCountryArray[i] !== userCountryArray[i]){
-      // console.log(answerCountryArray[i] + " not equal to " + userCountryArray[i]);
       return false;
-    }
+    };
   };
   return true;
-}
+}; // hasWon()
 
-/* displayFacts- function that removes
-*@param userCorrect {boolean} - if the user was correct or wrong (ran out of time)
+
+/* ------------- userIP() -----------
+* get infor on the user ip etc.
 */
-function displayFacts(userCorrect){
-  // 1) Hide the map & timer & word
-  // TO DO, add some transition???
-  // $("#gameRow").hide();
-  $("#timerContainer").hide();
-  $("#wordContainer").hide();
-  // 2) Create an alert in the header, depending if user was correct or not
-  if (userCorrect){
-    var alert = $("<div>").addClass("alert text-center alert-success").append(
-      $("<p>").html("Correct!")
-    );
-  } else {
-    var alert = $("<div>").addClass("alert text-center alert-danger").append(
-      $("<p>").html("Sorry, <strong>" + currentCountryObject.name + "</strong> was the correct country.")
-    );
-  }
-  // 3) Create text about the
-
-
-  // 4) Append it to the target
-  $("#alert").append(alert);
-}
-
-
-/*
-*/
-function playerIP(){
-  //0) get the ip info
-  // $.get("http://ipinfo.io", function(response) {
-  //   console.log(response.ip, response.country);
-  // }, "jsonp");
-
+function userIP(){
   $.ajax({
     url: "http://ipinfo.io",
     method: "GET",
     dataType: "jsonp",
   }).done(function(response){
     console.log(response);
-  })
-
-//   var example = $.get( "http://ipinfo.io", function() {
-//     alert( "success" );
-//   })
-//   .done(function(results) {
-//     alert( "second success" );
-//     console.log(results.ip);
-//   })
-//   .fail(function() {
-//     alert( "error" );
-//   })
-//   .always(function() {
-//     alert( "finished" );
-//   });
-//
-}
+  }); 
+}; // userIP();
 
 // III) ----------- playGame eventlistener function --------
 function playGame(){
   // 0) get player info
-  playerIP();
+  userIP();
 
   // console.log("playGame eventlistern ...");
   //1) hide the directions div
@@ -223,7 +183,7 @@ function keyDown(event){
     //i) update view
       console.log('Found!');
       updateUserWord(userGuess);
-      displayWord(); // updates the view
+      // displayWord(); // updates the view
     //ii) check if the user has won
       if (hasWon()){
         countdown.clear(); // turns off the timer
@@ -257,12 +217,6 @@ $(document).ready(function(){
   // next game event listener
   // $(document).on("click", ".", );
 
-  // Change the footer size
-  $(window).scroll(function() {
-    // console.log($(window).height);
-      // if (window.height - $("body").scrollTop() > 5){
-      //   console.log("test");
-      // }
-  });
+
 
 });
